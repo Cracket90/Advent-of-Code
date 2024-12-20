@@ -9,7 +9,7 @@ import re
 
 def do_multiplication(input_file: str) -> int:
     result = 0
-    regex = 'mul\([0-9]?[0-9]?[0-9],[0-9]?[0-9]?[0-9]\)'
+    regex = r'mul\([0-9]?[0-9]?[0-9],[0-9]?[0-9]?[0-9]\)'
     with open(input_file) as f:
         data = f.read()
     matches = re.findall(regex,data)
@@ -20,7 +20,7 @@ def do_multiplication(input_file: str) -> int:
 
 def do_better_multiplication(input_file: str) -> int:
     result = 0
-    regex = 'mul\([0-9]?[0-9]?[0-9],[0-9]?[0-9]?[0-9]\)'
+    regex = r'mul\([0-9]?[0-9]?[0-9],[0-9]?[0-9]?[0-9]\)'
     with open(input_file) as f:
         data = f.read()
     do_data = data.split("do()")
