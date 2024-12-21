@@ -40,9 +40,35 @@ def output_program(input_file: str) -> str:
         pointer += 2
     return ','.join(output)
 
+# def find_register_A(input_file: str) -> int:
+#     with open(input_file) as f:
+#         data1, data2 = f.read().strip().split('\n\n')
+#     program = list(map(int, data2.split(':')[1].split(',')))
+#     output = program[::-1]
+#     possible_A_values = ['']
+#     for value in output:
+#         next_possible_A_values = []
+#         for r in possible_A_values:
+#             for l in ['000', '001', '010', '011', '100', '101', '110', '111']:
+#                 a = int(r+l, 2)
+#                 b = a % 8
+#                 b = b ^ 1
+#                 c = a >> b
+#                 b = b ^ 5
+#                 b = b ^ c
+#                 if b % 8 == value:
+#                     next_possible_A_values.append(bin(a)[2:])
+#         possible_A_values = next_possible_A_values
+#     ans = min(int(value, 2) for value in possible_A_values)
+#     return ans
+
 def find_register_A(input_file: str) -> int:
     with open(input_file) as f:
         data1, data2 = f.read().strip().split('\n\n')
+    registers_init = {}
+    for line in data1.split('\n'):
+        name, value_init = line.split(':')
+        registers_init[name[-1]] = int(value_init)
     program = list(map(int, data2.split(':')[1].split(',')))
     output = program[::-1]
     possible_A_values = ['']
@@ -50,14 +76,33 @@ def find_register_A(input_file: str) -> int:
         next_possible_A_values = []
         for r in possible_A_values:
             for l in ['000', '001', '010', '011', '100', '101', '110', '111']:
-                a = int(r+l, 2)
-                b = a % 8
-                b = b ^ 1
-                c = a >> b
-                b = b ^ 5
-                b = b ^ c
-                if b % 8 == value:
-                    next_possible_A_values.append(bin(a)[2:])
+                registers_init['A'] = int(r+l, 2)
+                registers = {}
+                registers['A'] = registers_init['A']
+                registers['B'] = registers_init['B']
+                registers['C'] = registers_init['C']
+                for pointer in range(0, len(program), 2):
+                    opcode = program[pointer]
+                    operand = program[pointer+1]
+                    match opcode:
+                        case 0:
+                            adv(operand, registers)
+                        case 1:
+                            bxl(operand, registers)
+                        case 2:
+                            bst(operand, registers)
+                        case 3:
+                            jnz(operand, pointer, registers)
+                        case 4:
+                            bxc(registers)
+                        case 5:
+                            res = out(operand, registers)
+                            if value == int(res):
+                                next_possible_A_values.append(bin(registers_init['A'])[2:])
+                        case 6:
+                            bdv(operand, registers)
+                        case 7:
+                            cdv(operand, registers)
         possible_A_values = next_possible_A_values
     ans = min(int(value, 2) for value in possible_A_values)
     return ans
