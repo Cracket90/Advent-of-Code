@@ -18,11 +18,12 @@ def find_decimal_number(input_file: str) -> int:
         in1, op, in2 = operation_data.split()
         operations.append((in1, in2, op, res))
     while operations:
-        for operation in operations:
-            in1, in2, op, res = operation
-            if in1 in wire_values and in2 in wire_values:
-                wire_values[res] = do_operation(wire_values[in1], wire_values[in2], op)
-                operations.remove(operation)
+        operation = operations.pop(0)
+        in1, in2, op, res = operation
+        if in1 in wire_values and in2 in wire_values:
+            wire_values[res] = do_operation(wire_values[in1], wire_values[in2], op)
+        else:
+            operations.append(operation)
     bits = []
     for wire in sorted((el for el in wire_values if el.startswith('z')), reverse= True):
         bits.append(str(wire_values[wire]))
