@@ -30,11 +30,11 @@ def find_fresh_ingredients2(input_file: str) -> int:
     for start, end in fresh_ranges:
         if start > curr_max:
             fresh_ingredients += (end - start + 1)
-            curr_max = end
         elif end > curr_max:
             fresh_ingredients += (end - curr_max)
-            curr_max = end
+        curr_max = max(curr_max, end)
     return fresh_ingredients
+
 
 if __name__ == '__main__':
     print(find_fresh_ingredients1('input_day5.txt'))
