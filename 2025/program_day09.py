@@ -65,6 +65,51 @@ def find_largest_area2(input_file: str) -> int:
                     max_area = area
     return max_area
 
+# from matplotlib import path
+# from matplotlib import pyplot as plt
+
+# def find_largest_area2(input_file: str) -> int:
+#     with open(input_file, encoding= 'utf8') as f:
+#         tiles = f.read().splitlines()
+#     red_tiles = [tuple(map(int, tile.split(','))) for tile in tiles]
+#     polygon = path.Path(red_tiles)
+#     x = [p[0] for p in red_tiles]
+#     y = [p[1] for p in red_tiles]
+#     x.append(x[0])
+#     y.append(y[0])
+#     plt.figure(figsize=(8, 6))
+#     plt.plot(x, y, linestyle='-', color='b', label='Perimetro')
+#     plt.fill(x, y, alpha=0.2, color='blue')
+#     plt.grid(True)
+#     plt.title("Visualizzazione Poligono")
+#     plt.xlabel("Coordinate X")
+#     plt.ylabel("Coordinate Y")
+#     plt.legend()
+#     plt.axis('equal')
+#     plt.show()
+#     max_area = 0
+#     for i, first_corner in enumerate(red_tiles):
+#         xC1, yC1 = first_corner
+#         for j, second_corner in enumerate(red_tiles):
+#             if j > i:
+#                 xC2, yC2 = second_corner
+#                 area = (abs(yC2 - yC1) + 1) * (abs(xC2 - xC1) + 1)
+#                 if area <= max_area:
+#                     continue
+#                 xR_min, xR_max = min(xC1, xC2), max(xC1, xC2)
+#                 yR_min, yR_max = min(yC1, yC2), max(yC1, yC2)
+#                 is_inside = True
+#                 for x in range(xR_min, xR_max+1):
+#                     for y in range(yR_min, yR_max+1):
+#                         if not polygon.contains_point((x, y), radius=0.001):
+#                             is_inside = False
+#                             break
+#                     if not is_inside:
+#                         break
+#                 if is_inside:
+#                     max_area = area
+#     return max_area
+
 
 if __name__ == '__main__':
     print(find_largest_area1('input_day9.txt'))
